@@ -1,0 +1,6 @@
+id,userPrincipalName,displayName,userType,accountEnabled,createdDateTime,signInActivityLastSignInDateTime,managerUserPrincipalName,assignedLicenses,department,jobTitle
+u-001,alex.johnson@contoso.com,Alex Johnson,Member,true,2025-01-10,2026-08-01,maria.santos@contoso.com,Microsoft 365 Business Premium,IT,Support Technician
+u-002,taylor.disabled@contoso.com,Taylor Disabled,Member,false,2023-04-12,2025-12-10,maria.santos@contoso.com,Microsoft 365 E3,Operations,Analyst
+u-003,rachel.guest_example.com#EXT#@contoso.onmicrosoft.com,Rachel Guest,Guest,true,2024-02-01,2024-04-10,,None,External,Contractor
+u-004,svc.backup@contoso.com,SVC Backup,Member,true,2022-03-08,2026-08-20,,None,IT,Service Account
+u-005,casey.managerless@contoso.com,Casey Managerless,Member,true,2025-08-11,2026-07-14,,Microsoft 365 E3,Finance,Coordinator

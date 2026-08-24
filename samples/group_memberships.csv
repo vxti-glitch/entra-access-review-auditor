@@ -1,0 +1,5 @@
+groupId,memberId,memberUserPrincipalName,memberType
+g-001,u-001,alex.johnson@contoso.com,Member
+g-002,u-003,rachel.guest_example.com#EXT#@contoso.onmicrosoft.com,Guest
+g-003,u-002,taylor.disabled@contoso.com,Member
+g-004,u-003,rachel.guest_example.com#EXT#@contoso.onmicrosoft.com,Guest

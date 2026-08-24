@@ -1,0 +1,3 @@
+roleName,principalId,principalUserPrincipalName,assignmentType
+Global Administrator,u-002,taylor.disabled@contoso.com,eligible
+User Administrator,u-001,alex.johnson@contoso.com,active
