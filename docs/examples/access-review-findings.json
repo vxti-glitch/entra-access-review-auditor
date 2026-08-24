@@ -1,0 +1,73 @@
+{
+  "summary": {
+    "users": 5,
+    "groups": 4,
+    "memberships": 4,
+    "role_assignments": 2,
+    "findings": 7,
+    "findings_by_severity": {
+      "medium": 1,
+      "high": 5,
+      "low": 1
+    },
+    "findings_by_category": {
+      "disabled-licensed-user": 1,
+      "stale-guest-user": 1,
+      "missing-manager": 1,
+      "ownerless-group": 1,
+      "guest-in-sensitive-group": 1,
+      "privileged-role-review": 2
+    }
+  },
+  "findings": [
+    {
+      "severity": "medium",
+      "category": "disabled-licensed-user",
+      "principal": "taylor.disabled@contoso.com",
+      "detail": "Disabled account still has assigned licenses.",
+      "recommendation": "Review license assignment and remove unused licenses if no exception exists."
+    },
+    {
+      "severity": "high",
+      "category": "stale-guest-user",
+      "principal": "rachel.guest_example.com#EXT#@contoso.onmicrosoft.com",
+      "detail": "Guest account has no sign-in within 30 days.",
+      "recommendation": "Ask the sponsor to approve continued access or remove the guest."
+    },
+    {
+      "severity": "low",
+      "category": "missing-manager",
+      "principal": "casey.managerless@contoso.com",
+      "detail": "Enabled member account has no manager value.",
+      "recommendation": "Update the manager attribute to support approvals and access reviews."
+    },
+    {
+      "severity": "high",
+      "category": "ownerless-group",
+      "principal": "Global Admin Break Glass",
+      "detail": "Group does not have an owner recorded in the export.",
+      "recommendation": "Assign a business owner before the next access review."
+    },
+    {
+      "severity": "high",
+      "category": "guest-in-sensitive-group",
+      "principal": "rachel.guest_example.com#EXT#@contoso.onmicrosoft.com",
+      "detail": "Guest has membership in sensitive group 'Finance SharePoint Members'.",
+      "recommendation": "Require owner approval or remove the guest from the group."
+    },
+    {
+      "severity": "high",
+      "category": "privileged-role-review",
+      "principal": "taylor.disabled@contoso.com",
+      "detail": "Principal has eligible assignment to 'Global Administrator'. The principal account is disabled.",
+      "recommendation": "Confirm the role assignment is still required and covered by an access review."
+    },
+    {
+      "severity": "high",
+      "category": "privileged-role-review",
+      "principal": "alex.johnson@contoso.com",
+      "detail": "Principal has active assignment to 'User Administrator'.",
+      "recommendation": "Confirm the role assignment is still required and covered by an access review."
+    }
+  ]
+}

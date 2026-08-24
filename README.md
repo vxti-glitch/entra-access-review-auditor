@@ -1,8 +1,16 @@
 # Entra Access Review Auditor
 
+[![Python tests](https://github.com/vxti-glitch/entra-access-review-auditor/actions/workflows/python-tests.yml/badge.svg)](https://github.com/vxti-glitch/entra-access-review-auditor/actions/workflows/python-tests.yml)
+![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![Mode](https://img.shields.io/badge/Audit_mode-read_only-2E8B57)
+
 An offline Microsoft Entra ID access review helper for identifying stale accounts, risky guests, ownerless groups, and privileged role review candidates from CSV exports.
 
 The project is designed for help desk and junior IAM portfolio demos. It can run entirely against sample data, but also includes a PowerShell export script you can adapt in a Microsoft 365 developer tenant.
+
+![Sample Entra access review run](docs/assets/terminal-demo-final.png)
+
+_Sample run using the included synthetic Contoso identity data._
 
 ## What it demonstrates
 
@@ -15,6 +23,18 @@ The project is designed for help desk and junior IAM portfolio demos. It can run
 - Privileged role review candidate detection
 - Markdown and JSON audit output
 - Unit tests and GitHub Actions CI
+
+## Workflow
+
+```mermaid
+flowchart LR
+    A[Entra CSV exports] --> B[Schema validation]
+    B --> C[Identity and group audit]
+    C --> D[Risk classification]
+    D --> E[Markdown report]
+    D --> F[JSON evidence]
+    E --> G[Access review ticket]
+```
 
 ## Quick start
 
@@ -33,6 +53,8 @@ Generated files:
 
 - `reports/access-review-findings.json`
 - `reports/access-review-findings.md`
+
+See the checked-in [example access review report](docs/examples/access-review-findings.md) and [example JSON evidence](docs/examples/access-review-findings.json).
 
 ## Input files
 
