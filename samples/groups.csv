@@ -1,5 +1,5 @@
-id,displayName,owners,sensitivityLabel,securityEnabled,mailEnabled
-g-001,Helpdesk Standard Access,alex.johnson@contoso.com,General,true,false
-g-002,Finance SharePoint Members,finance.owner@contoso.com,Confidential,true,true
-g-003,Global Admin Break Glass,,Privileged,true,false
-g-004,Guest Collaboration Project,casey.managerless@contoso.com,General,true,true
+id,displayName,owners,ownersDataStatus,sensitivityLabel,securityEnabled,mailEnabled
+g-001,Helpdesk Standard Access,alex.johnson@contoso.com,available,General,true,false
+g-002,Finance SharePoint Members,finance.owner@contoso.com,available,Confidential,true,true
+g-003,Global Admin Break Glass,,available,Privileged,true,false
+g-004,Guest Collaboration Project,casey.managerless@contoso.com,available,General,true,true

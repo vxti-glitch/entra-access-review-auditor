@@ -1,0 +1,112 @@
+{
+  "decision_boundary": "Candidates require a decision by an authorized owner or IAM reviewer.",
+  "configuration": {
+    "stale_days": 90,
+    "guest_stale_days": 30,
+    "sensitive_groups": {
+      "identifiers": [
+        "g-003"
+      ],
+      "patterns": [
+        "\\b(finance|payroll|break[ -]?glass|privileged)\\b"
+      ]
+    },
+    "privileged_roles": {
+      "identifiers": [
+        "Global Administrator",
+        "Privileged Role Administrator",
+        "Security Administrator"
+      ],
+      "patterns": []
+    },
+    "service_accounts": {
+      "identifiers": [
+        "u-004",
+        "svc.backup@contoso.com"
+      ],
+      "patterns": []
+    }
+  },
+  "summary": {
+    "users": 5,
+    "groups": 4,
+    "memberships": 4,
+    "role_assignments": 2,
+    "candidates": 6,
+    "candidates_by_priority": {
+      "medium": 1,
+      "high": 4,
+      "low": 1
+    },
+    "candidates_by_category": {
+      "disabled-licensed-user": 1,
+      "stale-guest-candidate": 1,
+      "missing-manager-candidate": 1,
+      "confirmed-ownerless-group-candidate": 1,
+      "guest-sensitive-group-candidate": 1,
+      "privileged-role-review-candidate": 1
+    }
+  },
+  "candidates": [
+    {
+      "priority": "medium",
+      "category": "disabled-licensed-user",
+      "principal": "taylor.disabled@contoso.com",
+      "sign_in_state": "known_stale",
+      "classification": "direct",
+      "triggered_rule": "accountEnabled=false AND assignedLicenses not empty",
+      "detail": "The export shows a disabled account with assigned licenses.",
+      "next_step": "Ask an authorized license owner to confirm whether an exception or removal is appropriate."
+    },
+    {
+      "priority": "high",
+      "category": "stale-guest-candidate",
+      "principal": "rachel.guest_example.com#EXT#@contoso.onmicrosoft.com",
+      "sign_in_state": "known_stale",
+      "classification": "direct",
+      "triggered_rule": "lastSignInDateTime < today-30d",
+      "detail": "The recorded last sign-in is older than the configured 30-day threshold.",
+      "next_step": "An authorized owner or IAM reviewer must confirm context and decide whether access changes are appropriate."
+    },
+    {
+      "priority": "low",
+      "category": "missing-manager-candidate",
+      "principal": "casey.managerless@contoso.com",
+      "sign_in_state": "known_recent",
+      "classification": "direct",
+      "triggered_rule": "manager empty AND no explicit service-account rule",
+      "detail": "The export has no manager value and the identity is not an explicitly configured service account.",
+      "next_step": "Determine the account type and responsible owner; do not infer employment status from this field alone."
+    },
+    {
+      "priority": "high",
+      "category": "confirmed-ownerless-group-candidate",
+      "principal": "Global Admin Break Glass",
+      "sign_in_state": "unknown",
+      "classification": "heuristic",
+      "triggered_rule": "sensitive_group.identifier:g-003",
+      "detail": "Owner data was available and no owner was recorded.",
+      "next_step": "An authorized group administrator must confirm ownership and remediation."
+    },
+    {
+      "priority": "high",
+      "category": "guest-sensitive-group-candidate",
+      "principal": "rachel.guest_example.com#EXT#@contoso.onmicrosoft.com",
+      "sign_in_state": "known_stale",
+      "classification": "heuristic",
+      "triggered_rule": "sensitive_group.pattern:\\b(finance|payroll|break[ -]?glass|privileged)\\b",
+      "detail": "A guest is listed in group 'Finance SharePoint Members', which matched a configured sensitive-group heuristic.",
+      "next_step": "The authorized group owner or IAM reviewer must decide whether membership is appropriate."
+    },
+    {
+      "priority": "high",
+      "category": "privileged-role-review-candidate",
+      "principal": "taylor.disabled@contoso.com",
+      "sign_in_state": "known_stale",
+      "classification": "heuristic",
+      "triggered_rule": "privileged_role.identifier:Global Administrator",
+      "detail": "The role name 'Global Administrator' matched a configured privileged-role heuristic. The exported principal account is disabled.",
+      "next_step": "An authorized role owner or IAM reviewer must confirm necessity and assignment state."
+    }
+  ]
+}

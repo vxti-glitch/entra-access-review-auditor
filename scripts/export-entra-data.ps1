@@ -44,9 +44,10 @@ Get-MgGroup -All -Property Id,DisplayName,SecurityEnabled,MailEnabled |
         Id,
         DisplayName,
         @{Name="owners";Expression={""}},
+        @{Name="ownersDataStatus";Expression={"unavailable"}},
         @{Name="sensitivityLabel";Expression={""}},
         SecurityEnabled,
         MailEnabled |
     Export-Csv -NoTypeInformation -Path (Join-Path $OutputPath "groups.csv")
 
-Write-Host "Starter exports written to $OutputPath. Populate owners, memberships, and role assignment CSVs as needed."
+Write-Host "Starter exports written to $OutputPath. Owner data is marked unavailable; collect it explicitly before classifying ownerless groups."

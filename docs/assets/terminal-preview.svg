@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1120" height="300" viewBox="0 0 1120 300" role="img" aria-labelledby="title desc">
-  <title id="title">Sample Entra access review audit</title>
-  <desc id="desc">PowerShell command auditing synthetic Entra users, groups, memberships, and role assignments.</desc>
+  <title id="title">Sample Entra access-review candidate run</title>
+  <desc id="desc">PowerShell command preparing review candidates from synthetic Entra users, groups, memberships, and role assignments.</desc>
   <rect width="1120" height="300" rx="8" fill="#111827"/>
   <rect width="1120" height="44" rx="8" fill="#1f2937"/>
   <rect y="36" width="1120" height="8" fill="#1f2937"/>
   <circle cx="24" cy="22" r="6" fill="#ef4444"/>
   <circle cx="44" cy="22" r="6" fill="#f59e0b"/>
   <circle cx="64" cy="22" r="6" fill="#22c55e"/>
-  <text x="88" y="28" fill="#d1d5db" font-family="Consolas, monospace" font-size="16">PowerShell - Entra access review audit</text>
+  <text x="88" y="28" fill="#d1d5db" font-family="Consolas, monospace" font-size="16">PowerShell - Entra candidate helper</text>
   <g fill="#e5e7eb" font-family="Consolas, monospace" font-size="17">
     <text x="24" y="82"><tspan fill="#60a5fa">PS&gt;</tspan> python .\src\entra_auditor.py --users .\samples\users.csv</text>
     <text x="58" y="110">--groups .\samples\groups.csv --memberships .\samples\group_memberships.csv</text>
     <text x="58" y="138">--roles .\samples\role_assignments.csv --out .\reports</text>
     <text x="24" y="184">Reviewed <tspan fill="#fbbf24">5 users</tspan>, <tspan fill="#fbbf24">4 groups</tspan>, 4 memberships.</text>
-    <text x="24" y="216">Findings: <tspan fill="#fbbf24">7 total</tspan>, <tspan fill="#ef4444">5 high</tspan>.</text>
+    <text x="24" y="216">Candidates: <tspan fill="#fbbf24">6 total</tspan>, <tspan fill="#ef4444">4 high priority</tspan>.</text>
     <text x="24" y="254">Output written to .\reports</text>
   </g>
 </svg>
