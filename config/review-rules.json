@@ -1,0 +1,16 @@
+{
+  "stale_days": 90,
+  "guest_stale_days": 30,
+  "sensitive_groups": {
+    "identifiers": ["g-003"],
+    "patterns": ["\\b(finance|payroll|break[ -]?glass|privileged)\\b"]
+  },
+  "privileged_roles": {
+    "identifiers": ["Global Administrator", "Privileged Role Administrator", "Security Administrator"],
+    "patterns": []
+  },
+  "service_accounts": {
+    "identifiers": ["u-004", "svc.backup@contoso.com"],
+    "patterns": []
+  }
+}

@@ -1,40 +1,22 @@
-# Entra Access Review Auditor
+# Entra Access-Review Candidate Helper
 
 [![Python tests](https://github.com/vxti-glitch/entra-access-review-auditor/actions/workflows/python-tests.yml/badge.svg)](https://github.com/vxti-glitch/entra-access-review-auditor/actions/workflows/python-tests.yml)
 ![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
-![Mode](https://img.shields.io/badge/Audit_mode-read_only-2E8B57)
+![Mode](https://img.shields.io/badge/Mode-offline%20read--only-2E8B57)
 
-An offline Microsoft Entra ID access review helper for identifying stale accounts, risky guests, ownerless groups, and privileged role review candidates from CSV exports.
+An offline helper that parses Microsoft Entra ID CSV exports and prepares cautious access-review candidates. It does not audit a tenant, assign risk, prove inactivity, or make access decisions. Every candidate requires review by an authorized owner or IAM reviewer.
 
-The project is designed for help desk and junior IAM portfolio demos. It can run entirely against sample data, but also includes a PowerShell export script you can adapt in a Microsoft 365 developer tenant.
+The checked-in samples and reports use synthetic Contoso data. No live tenant integration was performed for the repository examples.
 
-![Sample Entra access review run](docs/assets/terminal-demo-final.png)
+## What it does
 
-_Sample run using the included synthetic Contoso identity data._
+- Keeps sign-in evidence explicit as `known_recent`, `known_stale`, or `unknown`; blank and unparseable values remain unknown.
+- Separates unavailable group-owner export data from a confirmed empty owner list.
+- Uses documented configuration for stale thresholds, sensitive-group heuristics, privileged-role heuristics, and explicit service-account exclusions.
+- Records whether a classification is direct or heuristic and includes the exact configured rule that triggered it.
+- Produces Markdown and JSON candidate reports for human review.
 
-## What it demonstrates
-
-- Microsoft Entra ID access review concepts
-- CSV-based audit workflows
-- Stale user and guest identification
-- Disabled licensed account detection
-- Group owner hygiene checks
-- Guest access review candidate detection
-- Privileged role review candidate detection
-- Markdown and JSON audit output
-- Unit tests and GitHub Actions CI
-
-## Workflow
-
-```mermaid
-flowchart LR
-    A[Entra CSV exports] --> B[Schema validation]
-    B --> C[Identity and group audit]
-    C --> D[Risk classification]
-    D --> E[Markdown report]
-    D --> F[JSON evidence]
-    E --> G[Access review ticket]
-```
+Keyword or pattern matches are triage heuristics, not security conclusions. Names, roles, and group labels can be custom, localized, or misleading.
 
 ## Quick start
 
@@ -44,68 +26,45 @@ python .\src\entra_auditor.py `
   --groups .\samples\groups.csv `
   --memberships .\samples\group_memberships.csv `
   --roles .\samples\role_assignments.csv `
+  --config .\config\review-rules.json `
   --out .\reports
 ```
 
-Use `--fail-on-high` in automation if high-risk access review candidates should fail the job.
-
 Generated files:
 
-- `reports/access-review-findings.json`
-- `reports/access-review-findings.md`
+- `reports/access-review-candidates.json`
+- `reports/access-review-candidates.md`
 
-See the checked-in [example access review report](docs/examples/access-review-findings.md) and [example JSON evidence](docs/examples/access-review-findings.json).
+See the checked-in [synthetic Markdown example](docs/examples/access-review-candidates.md), [synthetic JSON example](docs/examples/access-review-candidates.json), and [review rules](config/review-rules.json).
 
-## Input files
+`--fail-on-high` can make an automation job exit with code 1 when a high-priority candidate exists. That exit code is a workflow signal only; it does not establish risk or authorize a change.
 
-### users.csv
+## Input boundary
 
-Required columns:
+`users.csv` requires identity, account-enabled, creation, sign-in, manager, and license fields documented by the sample header. Missing or invalid last-sign-in data produces an unknown-data candidate, never a stale conclusion.
 
-- `id`
-- `userPrincipalName`
-- `displayName`
-- `userType`
-- `accountEnabled`
-- `createdDateTime`
-- `signInActivityLastSignInDateTime`
-- `managerUserPrincipalName`
-- `assignedLicenses`
+`groups.csv` requires `id`, `displayName`, `owners`, and `sensitivityLabel`. Add `ownersDataStatus` with either:
 
-### groups.csv
+- `available`: the export included owner data; a blank `owners` value can become an ownerless candidate.
+- `unavailable`: owner coverage was not obtained; the helper reports that ownership is unknown.
 
-Required columns:
+If `ownersDataStatus` is absent or invalid, the helper fails closed to `unavailable`.
 
-- `id`
-- `displayName`
-- `owners`
-- `sensitivityLabel`
+`group_memberships.csv` and optional `role_assignments.csv` use the included sample headers. Records that cannot be joined or lack core role fields are labeled ambiguous for human review.
 
-### group_memberships.csv
+## Configuration
 
-Required columns:
+[`config/review-rules.json`](config/review-rules.json) contains:
 
-- `groupId`
-- `memberId`
-- `memberUserPrincipalName`
-- `memberType`
+- Member and guest stale-day thresholds.
+- Sensitive-group identifiers and regular-expression heuristics.
+- Privileged-role identifiers and optional regular-expression heuristics.
+- Explicit service-account IDs/UPNs and optional configured patterns.
 
-### role_assignments.csv
+The default service-account list contains only synthetic sample identifiers. A substring such as `svc` is not enough to exclude an account. Unknown identities default to human review.
 
-Required columns:
+## Verification scope
 
-- `roleName`
-- `principalId`
-- `principalUserPrincipalName`
+Automated tests cover unknown sign-ins, unavailable owner data, false-positive names, explicit service accounts, configurable thresholds, custom/non-English role names, ambiguous records, and heuristic-rule attribution. The example reports are regenerated from synthetic CSVs.
 
-## Security note
-
-Do not publish real tenant exports. The included sample data is fake and safe for portfolio demonstration.
-
-## Interview talking points
-
-- Why stale access creates security and compliance risk
-- Why ownerless groups are hard to govern
-- Why disabled accounts with active licenses waste money
-- How guest user reviews support least privilege
-- How help desk teams can prepare clean escalation reports for IAM admins
+Not demonstrated: live Graph export permissions, tenant data completeness, access-review decisions, remediation, production controls, or compliance outcomes. Do not publish real tenant exports; manually review candidate reports for identifiers and sensitive data before sharing.
